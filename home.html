@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Loan Approval System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            /* BACKGROUND IMAGE */
+            background: url("bg.jpeg.jpeg") ;
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        /* Optional overlay for readability */
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.4);
+            z-index: 0;
+        }
+        .box {
+            position: relative;
+            z-index: 1;
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+        }
+        button {
+            padding: 12px 25px;
+            font-size: 16px;
+            border: none;
+            border-radius: 8px;
+            background-color: #4ab7e2;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #357bd8;
+        }
+    </style>
+</head>
+<body>
+<div class="box">
+    <h1>Welcome to Loan Approval System</h1>
+    <p>Fast, Secure & Smart Loan Processing</p>
+    <a href="terms.html">
+        <button>Apply Loan</button>
+    </a>
+</div>
+</body>
+</html>

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Loan Approval System</title>
+    <style>
+body {
+            font-family: Arial, sans-serif;
+            background: url("bg.jpeg.jpeg") ;
+            background-size: cover;
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .container {
+            width: 420px;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0px 4px 15px rgba(0,0,0,0.1);
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 12px;
+        }
+        input, select {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+        }
+        button {
+            width: 100%;
+            margin-top: 20px;
+            padding: 10px;
+            background: #4a90e2;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>Loan Eligibility Form</h2>
+    <form id="loanForm">
+        <label>Gender</label>
+        <select name="Gender" required>
+            <option value="1">Male</option>
+            <option value="0">Female</option>
+        </select>
+        <label>Married</label>
+        <select name="Married" required>
+            <option value="1">Yes</option>
+            <option value="0">No</option>
+        </select>
+        <label>Dependents</label>
+        <input type="number" name="Dependents" required>
+        <label>Education</label>
+        <select name="Education" required>
+            <option value="1">Graduate</option>
+            <option value="0">Not Graduate</option>
+        </select>
+        <label>Self Employed</label>
+        <select name="Self_Employed" required>
+            <option value="1">Yes</option>
+            <option value="0">No</option>
+        </select>
+        <label>Applicant Income</label>
+        <input type="number" name="ApplicantIncome" required>
+        <label>Co-applicant Income</label>
+        <input type="number" name="CoapplicantIncome" required>
+        <label>Loan Amount</label>
+        <input type="number" name="LoanAmount" required>
+        <label>Loan Term (months)</label>
+        <input type="number" name="Loan_Amount_Term" required>
+        <label>Credit History</label>
+        <input type="number" name="Credit_History" required>
+        <label>Property Area (1 Rural, 2 Urban, 3 Semiurban)</label>
+        <input type="number" name="Property_Area" required>
+        <button type="submit">Check Eligibility</button>
+    </form>
+</div>
+<script>
+document.getElementById("loanForm").addEventListener("submit", async function(e){
+    e.preventDefault();
+    let formData = {
+        Gender: parseInt(document.querySelector("[name='Gender']").value),
+        Married: parseInt(document.querySelector("[name='Married']").value),
+        Dependents: parseInt(document.querySelector("[name='Dependents']").value),
+        Education: parseInt(document.querySelector("[name='Education']").value),
+        Self_Employed: parseInt(document.querySelector("[name='Self_Employed']").value),
+        ApplicantIncome: parseFloat(document.querySelector("[name='ApplicantIncome']").value),
+        CoapplicantIncome: parseFloat(document.querySelector("[name='CoapplicantIncome']").value),
+        LoanAmount: parseFloat(document.querySelector("[name='LoanAmount']").value),
+        Loan_Amount_Term: parseInt(document.querySelector("[name='Loan_Amount_Term']").value),
+        Credit_History: parseInt(document.querySelector("[name='Credit_History']").value),
+        Property_Area: parseInt(document.querySelector("[name='Property_Area']").value)
+    };
+    try {
+        let res = await fetch("http://127.0.0.1:8000/predict", {
+            method: "POST",
+            headers: {"Content-Type":"application/json"},
+            body: JSON.stringify(formData)
+        });
+        let data = await res.json();
+        alert("Result: " + data.status + "\nReason: " + data.reason);
+    } catch (err) {
+        alert("Error connecting to server");
+    }
+});
+</script>
+</body>
+</html>

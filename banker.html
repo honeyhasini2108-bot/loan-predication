@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Banker Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: url("bg.jpeg.jpeg") ;
+            background-size: cover;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .dashboard {
+            max-width: 900px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        h2, h3 {
+            text-align: center;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+        }
+
+        .stats div {
+            background: #f7f9ff;
+            padding: 12px;
+            border-radius: 10px;
+            text-align: center;
+            width: 150px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+
+        /* CHART SMALL SIZE */
+        #pieChart {
+            width: 250px !important;
+            height: 250px !important;
+            margin: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background: #4a90e2;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+<div class="dashboard">
+    <h2>Banker Page</h2>
+
+    <div class="stats">
+        <div>
+            <strong>Total</strong>
+            <p id="total">0</p>
+        </div>
+        <div>
+            <strong>Approved</strong>
+            <p id="approved">0</p>
+        </div>
+        <div>
+            <strong>Rejected</strong>
+            <p id="rejected">0</p>
+        </div>
+        <div>
+            <strong>Approval %</strong>
+            <p id="rate">0%</p>
+        </div>
+    </div>
+
+    <h3>Approval Distribution</h3>
+    <canvas id="pieChart"></canvas>
+
+    <h3>Recent Applications</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Income</th>
+                <th>Loan</th>
+                <th>Term</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody id="tableBody"></tbody>
+    </table>
+</div>
+
+<script>
+async function loadDashboard() {
+
+    let res = await fetch("http://127.0.0.1:8000/banker-summary");
+    let data = await res.json();
+
+    document.getElementById("total").innerText = data.total;
+    document.getElementById("approved").innerText = data.approved;
+    document.getElementById("rejected").innerText = data.rejected;
+    document.getElementById("rate").innerText = data.approval_rate + "%";
+
+    new Chart(document.getElementById("pieChart"), {
+        type: "pie",
+        data: {
+            labels: ["Approved", "Rejected"],
+            datasets: [{
+                data: [data.approved, data.rejected]
+            }]
+        }
+    });
+
+    let table = document.getElementById("tableBody");
+    table.innerHTML = "";
+
+    data.recent.forEach(row => {
+        table.innerHTML += `
+        <tr>
+            <td>${row[0]}</td>
+            <td>${row[1]}</td>
+            <td>${row[2]}</td>
+            <td>${row[3]}</td>
+            <td>${row[4]}</td>
+        </tr>`;
+    });
+}
+
+loadDashboard();
+</script>
+
+</body>
+</html>
+
+
+
