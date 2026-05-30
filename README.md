@@ -1,1 +1,1 @@
-# loan-predication
+[project report](./loan.pdf)
